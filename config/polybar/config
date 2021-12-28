@@ -1,0 +1,353 @@
+[colors]
+background = #fa1e2137 
+foreground = #e3eaf3
+primary = #02c084
+secondary = #65a2d9
+tertiary = #d07ef2
+fourth = #e5c246
+alert = #ed404c
+
+bg = #cc000000
+bg-alt = #20212C
+fg = #A0A0AB
+fg-alt = #5D5E72
+
+blue = #6BA2FF
+cyan = #45FFFF
+green = #96F7C8
+orange = #FFBA63
+pink = #FF6B9D
+purple = #E66AFC
+red = #FF7575
+yellow = #FFFF39
+
+trans = #00000000
+semi-trans-black = #cc000000
+
+shade-1 = #5D5E72
+shade-2 = #7A7B8C
+shade-3 = #A0A0AB
+shade-4 = #CACACE
+shade-5 = #F8F8F8
+
+
+[bar/mod]
+
+override-redirect = true
+wm-restack = i3
+
+bottom = false
+fixed-center = true
+height = 38
+;offset-x = 25
+offset-y = 10
+radius = 16px
+border-size = 0px
+border-color = #000
+
+padding-left = 0
+padding-right = 0
+
+module-margin-left = 1
+module-margin-right = 1
+
+;background = ${colors.background}
+foreground = ${colors.foreground}
+
+font-0 = Hack Nerd Font:pixelsize=12:antialias=true;2.5
+font-1 = Hack Nerd Font:style=Regular:pixelsize=17:antialias=true;3
+font-2 = Hack Nerd Font:style=Regular:pixelsize=22:antialias=true;3
+font-3 = FontAwesome5Free:style=Solid:size=10;4
+font-4 = FontAwesome5Free:style=Regular:size=10;4
+font-5 = FontAwesome5Brands:style=Regular:size=10;4
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[bar/first]
+inherit = bar/mod
+offset-x = 25
+width = 7%
+background = ${colors.bg}
+modules-center =  search timer screenshot
+
+[bar/second]
+inherit = bar/mod
+width = 7%
+background = ${colors.bg}
+offset-x = 46.5%
+modules-center = win
+
+[bar/third]
+width = 18%
+inherit =bar/mod
+offset-x = 530
+modules-left = i3
+background = ${colors.trans} 
+
+[bar/fourth]
+enable-ipc = true
+inherit = bar/mod
+width = 18%
+background = ${colors.bg}
+offset-x = 170
+modules-center =  spotify spotify-prev spotify-play-pause spotify-next
+
+
+[bar/fifth]
+inherit = bar/mod
+width = 14%
+background = ${colors.bg}
+offset-x = 82.3%
+modules-center = temperature batteryperc memory
+
+[bar/sixth]
+inherit = bar/mod
+width = 25%
+background = ${colors.bg}
+offset-x = 56%
+modules-center = margin date wlan audio margin
+
+[bar/seven]
+inherit = bar/mod
+width = 2%
+background = ${colors.trans}
+offset-x = 97%
+modules-center = powermenu 
+
+
+[module/search]
+type = custom/script
+exec = echo "%{T2}גּ%{T-}"
+click-left = ~/scripts/launcher.sh
+
+[module/screenshot]
+type = custom/script
+exec = echo "%{T2} %{T-}"
+click-right = scrot -d 2 -e 'mv "$f" ~/Pictures/Screenshots/ && dunstify "FullScreen Captured." "$f" -a Cheese' &
+#click-left = scrot -s -e 'mv "$f" ~/Pictures/Screenshots/ && dunstify -r "991030" "FullScreen Captured." "$f" -a scrot' &
+click-left = image=$(date +%s).png && maim -s -s -b 5.0 -p -5 -c 1,0,0.294 "$HOME/Pictures/Screenshots/$image" && dunstify "Screenshot saved" "$image" -a Cheese &
+#click-right = scrot $HOME/Pictures/Screenshots/`date +%Y-%m-%d_%H:%M:%S`.png && 'dunstify -r "991030" "FullScreen Captured." "$f" -a scrot' &
+#click-left = scrot -s $HOME/Pictures/Screenshots/`date +%Y-%m-%d_%H:%M:%S`.png -e 'dunstify -r "991030" "FullScreen Captured." "$f" -a scrot' &
+#click-left = scrot -d 3 -s &
+
+;[module/xwindow]
+;type = internal/xwindow
+;label = %title:0:25:...%
+;label-empty = "@Arch"
+
+[module/win]
+type = custom/script
+;tail = true
+interval = 0
+exec = ~/scripts/activewin.sh
+
+[module/margin]
+type = custom/text
+content = " "
+content-foreground = ${colors.trans}
+
+[module/i3]
+type = internal/i3
+pin-workspaces = false
+strip-wsnumbers = true
+index-sort = true
+enable-click = true
+enable-scroll = false
+wrapping-scroll = false
+reverse-scroll = false
+fuzzy-match = true
+
+ws-icon-default = ""
+ws-icon-0 = "0;0"
+ws-icon-1 = "1;%{T3}%{T-}"
+ws-icon-2 = "2;%{T3}%{T-}"
+ws-icon-3 = "3;%{T3}%{T-}"
+ws-icon-4 = "4;%{T3}%{T-}"
+ws-icon-5 = "5;%{T3}%{T-}"
+ws-icon-6 = "6;%{T3}%{T-}"
+ws-icon-7 = "7;%{T3}%{T-}"
+ws-icon-8 = "8;%{T3}%{T-}"
+ws-icon-9 = "9;%{T3}%{T-}"
+
+format = <label-state>
+
+label-focused = %icon%
+label-focused-foreground = #97E5D7
+label-focused-padding = 1
+
+label-unfocused = ${self.label-focused}
+label-unfocused-foreground = #E0BBE4
+label-unfocused-padding = ${self.label-focused-padding}
+
+label-visible = ${self.label-focused}
+label-visible-foreground =  ${color.bg}
+label-visible-padding = ${self.label-focused-padding}
+
+label-urgent = ${self.label-focused}
+label-urgent-foreground = ${colors.alert}
+label-urgent-padding = ${self.label-focused-padding}
+
+
+
+[module/temperature]
+type = internal/temperature
+interval = 5
+
+thermal-zone = 0
+
+hwmon-path =/sys/devices/pci0000:00/0000:00:18.3/hwmon/hwmon3/temp1_input
+base-temperature = 20
+; Default: 80
+warn-temperature = 90
+units = true
+;format = <ramp> <label>
+label =  %temperature-c%
+
+[module/memory]
+type = internal/memory
+interval = 3
+label =  %mb_used%
+
+
+[module/spotify]
+type = custom/script
+tail = true
+; prefix symbol is shown before the text
+format-prefix = "  "
+format = <label>
+exec = ~/scripts/scroll_spotify_status.sh
+label-maxlen = 20
+
+[module/spotify-prev]
+type = custom/script
+exec = echo ""
+format = <label>
+click-left = playerctl previous -p spotify
+
+[module/spotify-play-pause]
+type = custom/ipc
+hook-0 = echo ""
+hook-1 = echo ""
+initial = 1
+click-left = playerctl play-pause -p spotify
+
+[module/spotify-next]
+type = custom/script
+exec = echo " "
+format = <label>
+click-left = playerctl next -p spotify
+
+[module/wlan]
+type = internal/network
+interface = wlp2s0
+interval = 3.0
+
+;format-connected = "<ramp-signal> <label-connected>"
+format-connected = <label-connected>
+;format-packetloss = <animation-packetloss>
+;label-connected = %signal%% 直 %upspeed:2%  %downspeed:2% 
+label-connected = 直  %upspeed:2% ﰵ %downspeed:2% ﰬ
+format-connected-underline = #9f78e1
+label-connected-foreground = ${colors.primary}
+
+format-disconnected = <label-disconnected>
+format-disconnected-underline = ${self.format-connected-underline}
+label-disconnected = 睊
+label-disconnected-foreground = ${colors.alert}
+
+;ramp-signal-0 = 
+;ramp-signal-0-foreground = #F03051
+;ramp-signal-1 = 
+;ramp-signal-1-foreground = #F07127
+;ramp-signal-2 = 
+;ramp-signal-2-foreground = #F9CE56
+;ramp-signal-3 = 
+;ramp-signal-3-foreground = ${colors.purple}
+;ramp-signal-4 = 
+;ramp-signal-4-foreground = ${colors.purple}
+;ramp-signal-5 = 
+;ramp-signal-5-foreground = ${colors.purple}
+
+;animation-packetloss-0 = ⚠
+;animation-packetloss-0-foreground = #ffa64c
+;animation-packetloss-1 = 
+;animation-packetloss-1-foreground = #000000
+;animation-packetloss-framerate = 500
+
+
+[module/timer]
+
+type = custom/script
+
+exec = ~/scripts/polybar-timer.sh   tail '%{T2}祥%{T-}' 5
+tail = true
+
+click-left = ~/scripts/polybar-timer.sh new 25 '羽' 'ﲊ' 'notify-send "Session finished"' ; /path/to/polybar-timer.sh update %pid%
+click-middle = ~/scripts/polybar-timer.sh cancel ; /path/to/polybar-timer.sh update %pid%
+click-right = ~/scripts/polybar-timer.sh togglepause ; /path/to/polybar-timer.sh update %pid%
+scroll-up = ~/scripts/polybar-timer.sh increase 60 || ~/scripts/polybar-timer.sh   new 1 '羽' 'ﮫ' 'notify-send -u critical "Timer expired."' ; /path/to/polybar-timer.sh update %pid%
+scroll-down = ~/scripts/polybar-timer.sh increase -60 ; /path/to/polybar-timer.sh update %pid%
+
+
+[module/date]
+type = custom/script
+exec =  date '+%a,%e %b, %I:%M %p'
+interval = 60
+click-left = ~/scripts/calendar.sh
+format-prefix = " "
+format = <label>
+;format-background = #EAEAEA
+format-foreground = #CAF1DE
+;format-padding = 2
+
+; Available tokens:
+;   %output%
+; Default: %output%
+label = %output%
+
+[module/audio]
+type = internal/pulseaudio
+
+format-volume = <ramp-volume>
+label-volume-foreground = ${colors.secondary}
+ramp-volume-foreground = ${colors.secondary}
+label-volume = 
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+label-muted = ﱝ
+label-muted-foreground = ${colors.secondary}
+click-right = pavucontrol
+
+[module/batteryperc]
+type = custom/script
+exec = ~/scripts/battery_level.sh
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC0
+full-at = 98
+
+
+[module/powermenu]
+type = custom/text
+format-spacing = 1
+content = "%{T2} "
+content-foreground = ${colors.alert}
+click-left = ~/scripts/powermenu.sh &
+
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+pseudo-transparency =true
+
+[global/wm]
+margin-bottom = 20
