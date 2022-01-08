@@ -8,6 +8,8 @@ CHARGE="100"
 
 if [ "$VAR1" = "$VAR2" ]; then
     CHARGE=${BATTERY_INFO[4]//%}
+elif [ "${BATTERY_INFO[3]}" = "100%" ]; then
+    CHARGE=$((${BATTERY_INFO[3]//%}))
 else
     CHARGE=$((${BATTERY_INFO[3]//%,}))
 fi
